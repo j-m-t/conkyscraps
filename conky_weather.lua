@@ -64,8 +64,8 @@ conky.config = {
     color8 = "DimGray",
     color9 = 'tomato',
 
-    template1 = '/path/to/conditions_parse.py/',
-    template2 = '/path/to/wikipedia_today_scrape.py/',
+    template1 = '/path/to/conkyscraps/weather/',
+    template2 = '/path/to/conkyscraps/wikipedia/',
     template3 = '/en/us/washington-dc/20006/weather-forecast/327659',
     template4 = '54'
 }
