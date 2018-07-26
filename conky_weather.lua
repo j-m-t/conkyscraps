@@ -67,8 +67,8 @@ conky.config = {
     template1 = '/path/to/conkyscraps/weather/',
     template2 = '/path/to/conkyscraps/wikipedia/',
     template3 = '/en/us/washington-dc/20006/weather-forecast/327659',
-    template4 = '54'
-}
+    template4 = 'C',
+    template5 = '50'}
 
 conky.text = [[
 ##################################
@@ -76,7 +76,8 @@ conky.text = [[
 ##################################
 \
 ${voffset 15}${font Orbitron:size=12}${color4}Weather${offset 4}${voffset -1}${color8}${hr 2}\
-${texeci 90 python3 ${template1}conditions_parse.py ${template1} ${template3}}${font Exo 2:size=10.5}
+${texeci 90 python3 ${template1}conditions_parse.py ${template1} ${template3} ${template 4}}\
+${font Exo 2:size=10.5}
 ${goto 107}${color3}${execi 90 sed -n '37p' ${template1}conditions}
 ${goto 107}${color3}${execi 90 sed -n '38p' ${template1}conditions}
 ${voffset 15}${goto 5}${font conkyweather:size=70}${color3}${execi 90 sed -n '1p' ${template1}conditions}${font}
@@ -246,7 +247,7 @@ ${alignr}${execpi 90 sed -n '33p' ${template1}conditions}°
 \
 \
 ## TODAY IN HISTORY
-${texeci 180 python3 ${template2}wikipedia_today_scrape.py ${template2} ${template4}}\
+${texeci 180 python3 ${template2}wikipedia_today_scrape.py ${template2} ${template5}}\
 ${voffset 8}${font Linux Libertine:size=10.5}${execpi 5 sed -n '1p' ${template2}history}
 ${execpi 5 sed -n '2p' ${template2}history}
 ${execpi 5 sed -n '3p' ${template2}history}
