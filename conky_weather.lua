@@ -138,7 +138,7 @@ ${alignr}${execpi 90 sed -n '17p' ${template1}conditions}
 \
 ## WIND INFO #####################
 ${voffset 10}${goto 18}${font ConkyWindNESW:size=45}${execpi 90 sed -n '5p' ${template1}conditions}${font}
-${voffset -45}${goto 107}${color3}${font Exo 2:size=13}Wind speed: ${execpi 600 sed -n '6p' ${template1}conditions}
+${voffset -45}${goto 107}${color3}${font Exo 2:size=13}Wind speed: ${execpi 90 sed -n '6p' ${template1}conditions}
 \
 ${goto 107}${font Exo 2:size=9}${color3}Pressure: ${color2}\
 ${goto 165}${execpi 90 sed -n '8p' ${template1}conditions}
@@ -269,7 +269,7 @@ ${voffset -71}${font Exo 2:size=10}${color3}${alignc -98}${time %A}${font}
 ${voffset 4}${font Orbitron:bold:size=16}\
 ${if_match ${time %e}<=9}${color5}${alignc -96}${time %e}${font}\
 ${else}\
-${if_match ${time %e}>=10}${color5}${alignc -101}${time %e}\
+${if_match ${time %e}>=10}${color5}${alignc -98}${time %e}\
 ${endif}${endif}${font}
 ${voffset 1}${font Exo 2:size=10}${color3}${alignc -98}${time %B}${font}
 ${voffset 1}${font Exo2:size=9}${color3}${alignc -98}${time %Y}${font}
