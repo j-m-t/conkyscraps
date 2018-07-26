@@ -269,10 +269,17 @@ def strain_forecast(soup):
         #       after the degree symbol (°), which causes 'strip' to fail.
         if 'Lo' in dailysoup('span')[1].text:
             dailyinfo['high'] = dailysoup('span')[1].text
-            dailyinfo['low'] = dailysoup('span')[0].text.split('°')[0]
+            dailyinfo['low'] = '/' + convert_item((dailysoup('span')[0].text
+                                                   .split('°')[0]),
+                                                  'temp', scale, args.scale)
         else:
-            dailyinfo['high'] = dailysoup('span')[0].text.split('°')[0]
-            dailyinfo['low'] = dailysoup('span')[1].text.split('°')[0]
+            dailyinfo['high'] = convert_item((dailysoup('span')[0]
+                                              .text.split('°')[0]),
+                                             'temp', scale, args.scale)
+            dailyinfo['low'] = '/' + convert_item((dailysoup('span')[1].text
+                                                   .split('°')[0]
+                                                   .split('/')[1]),
+                                                  'temp', scale, args.scale)
         description = wordwrap(dailysoup('span')[-1].text)
         dailyinfo['line1'] = description[0]
         dailyinfo['line2'] = description[1]
@@ -354,21 +361,29 @@ if __name__ == "__main__":
         scale = 'F'
 
     # Collect the weather information
-    # Note: '\xc2' is part of the UTF8 representation of the degree symbol
+    # NOTE: I strip the degree symbol to be able to do conditional comparisons
+    #       of the temperatures in Conky.  I later append the degree symbols in
+    #       the Lua script.
+    # NOTE: '\xc2' is part of the UTF8 representation of the degree symbol
     weather = OrderedDict()
     weather['current_icon'] = image_conkyweather[forecast[2]['class'][1]
                                                  .split('-')[1]]
     weather['current_cond'] = forecast[3]("span")[-1].text
-    weather['current_temp'] = temp[0].text.strip('°')
-    weather['current_feel'] = temp[1].text.split(' ')[1].strip('°')
+    weather['current_temp'] = convert_item(temp[0].text.strip('°'),
+                                           'temp', scale, args.scale)
+    weather['current_feel'] = convert_item(temp[1].text.split(' ')[1]
+                                           .strip('°'),
+                                           'temp', scale, args.scale)
     weather['windicon'] = image_conkywindnesw[wind_icon]
     weather['wind_spd'] = misc[1].text
     weather['humidity'] = misc[-7].text.split(': ')[1]
     weather['pressure'] = misc[-6].text.split(': ')[1]
     weather['uv_index'] = misc[-5].text.split(': ')[1]
     weather['cloudcov'] = misc[-4].text.split(': ')[1]
-    weather['dewpoint'] = misc[-2].text.split(': ')[1].split('°')[0]
     weather['visiblty'] = misc[-1].text.split(': ')[1]
+    weather['dewpoint'] = convert_item((misc[-2].text.split(': ')[1]
+                                        .split('°')[0]),
+                                       'temp', scale, args.scale)
     weather['sunrise'] = convert_time(sun("span")[0].text)
     weather['sunset'] = convert_time(sun("span")[1].text)
     weather['suntime'] = skytime(sun, weather['sunrise'],
@@ -385,24 +400,32 @@ if __name__ == "__main__":
 
     # Make separate dictionary for temperature history
     history = OrderedDict()
-    history['high_today'] = records[0].text.strip('°')
-    history['high_mean'] = records[1].text.strip('°')
+    history['high_today'] = convert_item(records[0].text.strip('°'),
+                                         'temp', scale, args.scale)
+    history['high_mean'] = convert_item(records[1].text.strip('°'),
+                                        'temp', scale, args.scale)
     if records[2].text == 'N/A':
         history['high_record'] = 'No record'
         history['high_record_year'] = ''
     else:
-        history['high_record'] = records[2].text.split('°')[0]
+        history['high_record'] = convert_item(records[2].text.split('°')[0],
+                                              'temp', scale, args.scale)
         history['high_record_year'] = records[2].text.split(' ')[1]
-    history['high_last_year'] = records[3].text.strip('°')
-    history['low_today'] = records[4].text.strip('°')
-    history['low_mean'] = records[5].text.strip('°')
+    history['high_last_year'] = convert_item(records[3].text.strip('°'),
+                                             'temp', scale, args.scale)
+    history['low_today'] = convert_item(records[4].text.strip('°'),
+                                        'temp', scale, args.scale)
+    history['low_mean'] = convert_item(records[5].text.strip('°'),
+                                       'temp', scale, args.scale)
     if records[6].text == 'N/A':
         history['low_record'] = 'No record'
         history['low_record_year'] = ''
     else:
-        history['low_record'] = records[6].text.split('°')[0]
+        history['low_record'] = convert_item(records[6].text.split('°')[0],
+                                             'temp', scale, args.scale)
         history['low_record_year'] = records[6].text.split(' ')[1]
-    history['low_last_year'] = records[7].text.strip('°')
+    history['low_last_year'] = convert_item(records[7].text.strip('°'),
+                                            'temp', scale, args.scale)
 
     # Make a dictionary for the precipitation info
     precipitation = OrderedDict()
