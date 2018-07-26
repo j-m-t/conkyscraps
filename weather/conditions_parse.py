@@ -271,6 +271,15 @@ if __name__ == "__main__":
     moon_plus = (moon_info('img', class_='moonNotToday')[2].attrs['src']
                  .split('moon_day_')[-1].split('.')[0])
 
+    # Determine temperature scale used in HTML
+    scale = curr_cond.find(checked="checked").get("value")
+    if scale == 'celsius':
+        scale = 'C'
+    else:
+        # I think Accuweather misspells Fahrenheit (as 'farenheit).
+        # I don't see Accuweather using Kelvin or other scales anytime soon.
+        scale = 'F'
+
     # Collect the weather information
     # Note: '\xc2' is part of the UTF8 representation of the degree symbol
     weather = OrderedDict()
