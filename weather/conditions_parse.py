@@ -379,7 +379,10 @@ if __name__ == "__main__":
                                         scale, args.scale)
                            + units_conversion[args.scale + 'speed'])
     weather['humidity'] = misc[-7].text.split(': ')[1]
-    weather['pressure'] = misc[-6].text.split(': ')[1]
+    weather['pressure'] = (convert_item(misc[-6].text
+                                        .split(': ')[1].split()[0],
+                                        'pressure', scale, args.scale)
+                           + units_conversion[args.scale + 'pressure'])
     weather['uv_index'] = misc[-5].text.split(': ')[1]
     weather['cloudcov'] = misc[-4].text.split(': ')[1]
     weather['dewpoint'] = convert_item((misc[-2].text.split(': ')[1]
