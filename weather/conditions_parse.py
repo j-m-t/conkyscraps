@@ -107,6 +107,12 @@ conversion = {'Ctemp': C2F, 'Ftemp': F2C,
               'Cpressure': mbar2hg, 'Fpressure': hg2mbar}
 
 
+# The key relies on the desired scale
+units_conversion = {'Cspeed': ' km/h', 'Fspeed': ' mph',
+                    'Cdist': ' km', 'Fdist': ' mi',
+                    'Cmeasure': ' mm', 'Fmeasure': ' in',
+                    'Cpressure': ' mb', 'Fpressure': ' in'}
+
 
 def convert_item(val, item, current_scale, desired_scale):
     """
