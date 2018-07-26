@@ -433,8 +433,11 @@ if __name__ == "__main__":
     # Make a dictionary for the precipitation info
     precipitation = OrderedDict()
     precipitation['percent'] = daily_cond.find("span", class_="precip").text
-    precipitation['inches'] = (daily_cond.find(class_="stats")('li')[2]
-                               .text.split(': ')[1])
+    precipitation['inches'] = (convert_item(daily_cond
+                                            .find(class_="stats")('li')[2]
+                                            .text.split(': ')[1].split()[0],
+                                            'measure', scale, args.scale)
+                               + units_conversion[args.scale + 'measure'])
     precipitation['hours'] = (daily_cond.find(class_="stats")('li')[-2]
                               .text.split(': ')[1])
 
