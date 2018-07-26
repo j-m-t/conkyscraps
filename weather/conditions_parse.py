@@ -380,10 +380,13 @@ if __name__ == "__main__":
     weather['pressure'] = misc[-6].text.split(': ')[1]
     weather['uv_index'] = misc[-5].text.split(': ')[1]
     weather['cloudcov'] = misc[-4].text.split(': ')[1]
-    weather['visiblty'] = misc[-1].text.split(': ')[1]
     weather['dewpoint'] = convert_item((misc[-2].text.split(': ')[1]
                                         .split('°')[0]),
                                        'temp', scale, args.scale)
+    weather['visiblty'] = (convert_item(misc[-1].text
+                                        .split(': ')[1].split()[0],
+                                        'dist', scale, args.scale)
+                           + units_conversion[args.scale + 'dist'])
     weather['sunrise'] = convert_time(sun("span")[0].text)
     weather['sunset'] = convert_time(sun("span")[1].text)
     weather['suntime'] = skytime(sun, weather['sunrise'],
