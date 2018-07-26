@@ -99,6 +99,38 @@ def hg2mbar(pressure):
     # This conversion is a little imprecise
     return '{:.2f}'.format(33.8637526*float(pressure))
 
+
+# The key relies on the actual scale
+conversion = {'Ctemp': C2F, 'Ftemp': F2C,
+              'Cdist': km2mile, 'Fdist': mile2km,
+              'Cmeasure': mm2inch, 'Fmeasure': inch2mm,
+              'Cpressure': mbar2hg, 'Fpressure': hg2mbar}
+
+
+
+def convert_item(val, item, current_scale, desired_scale):
+    """
+    Converts the between metric and imperial.
+
+    Args
+        val (str): The current value of the item being measured.
+        item (str): The item with metric and imperial measures.
+        current_scale (str): The temperature being displayed on
+            Accuweather. Used as a proxy for metric or imperial measures.
+        desired_scale (str): The temperature scale that is desired.
+            Like before, this is a proxy for metric or imperial measures.
+
+    Returns:
+        str: The converted value.
+
+    """
+    if current_scale == desired_scale:
+        pass
+    else:
+        val = conversion[current_scale + item](val)
+    return val
+
+
 def convert_time(time):
     """
     Converts 12-hour time to 24-hour time.
