@@ -20,9 +20,11 @@ In *conky_weather.lua*:
 * `template3 = '/en/us/washington-dc/20006/weather-forecast/327659'`: This is from Accuweather 
 * `template4 = 'C'`: Your choice of Celsius/metric (C) or Fahrenheit/imperial (F)
 * `template5 = '50'`: The number of characters per line in the history section
+
 In *weather_conky_draw.lua*:
 * `scale = 'execpi 90 sed -n "40p" /path/to/weather/conditions'`: Change the path to the `weather` subdirectory
 * `temp = 'execpi 90 sed -n "3p" /path/to/weather/conditions'`: Likewise, change the path to the `weather` subdirectory
+
 This should be done for all the scale or temp paths in `weather_conky_draw.lua`.
 
 ### Fonts
