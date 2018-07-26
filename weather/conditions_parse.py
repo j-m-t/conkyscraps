@@ -20,6 +20,9 @@ parser.add_argument('loc', nargs='?', type=str,
                     const=loc_default,
                     default=loc_default,
                     help=loc_help)
+scale_help = 'Desired temperature scale; either \'C\' or \'F\''
+parser.add_argument('scale', nargs='?', type=str, const='C',
+                    default='C', help=scale_help)
 args = parser.parse_args()
 
 BASEADDRESS = 'http://www.accuweather.com/'
@@ -360,6 +363,7 @@ if __name__ == "__main__":
     text.write("%s, %s\n" % (city, region))
     text.write("%s\n" % country)
     text.write("%s\n" % now)
+    text.write("%s\n" % args.scale)
     text.close()
     text = open("forecast", "w")
     for x in range(0, 5):
