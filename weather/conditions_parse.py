@@ -67,6 +67,38 @@ image_moongiant = {'first': 'T', 'WaxG_50': 'U', 'WaxG_55': 'U',
                    'WaxC_40': 'S', 'WaxC_45': 'S'}
 
 
+def C2F(temp):
+    return str(round(1.8*int(temp)+32))
+
+
+def F2C(temp):
+    return str(int(round((int(temp)-32)/1.8)))
+
+
+def km2mile(dist):
+    return str(int(round(0.6213712*float(dist))))
+
+
+def mile2km(dist):
+    return str(int(round(1.609344*float(dist))))
+
+
+def mm2inch(measure):
+    return str(int(round(0.03937008*float(measure))))
+
+
+def inch2mm(measure):
+    return str(int(round(25.4*float(measure))))
+
+
+def mbar2hg(pressure):
+    return '{:.2f}'.format(0.0295301*float(pressure))
+
+
+def hg2mbar(pressure):
+    # This conversion is a little imprecise
+    return '{:.2f}'.format(33.8637526*float(pressure))
+
 def convert_time(time):
     """
     Converts 12-hour time to 24-hour time.
