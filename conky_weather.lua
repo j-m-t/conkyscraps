@@ -64,6 +64,9 @@ conky.config = {
     color8 = "DimGray",
     color9 = 'tomato',
 
+    lua_load = '/path/to/weather/conky_draw.lua',
+    lua_draw_hook_pre = 'main',
+
     template1 = '/path/to/conkyscraps/weather/',
     template2 = '/path/to/conkyscraps/wikipedia/',
     template3 = '/en/us/washington-dc/20006/weather-forecast/327659',
@@ -84,29 +87,9 @@ ${voffset 15}${goto 5}${font conkyweather:size=70}${color3}${execi 90 sed -n '1p
 \
 \
 ## TEMPERATURE COLORS ############
-${voffset -100}${goto 20}${font Weather:size=33}\
-${if_match ${execpi 90 sed -n '3p' ${template1}conditions} < 50}${color cyan}\
-    y${voffset -8}${font Exo 2:size=20} ${execpi 90 sed -n '3p' ${template1}conditions}°F \
-(${execpi 90 sed -n '4p' ${template1}conditions}°F)\
-${endif}\
+# This is controlled by the configuration weather_conky_draw.lua, via conky_draw.lua
 \
-${if_match ${execpi 90 sed -n '3p' ${template1}conditions} >= 50}\
-${if_match ${execpi 90 sed -n '3p' ${template1}conditions} <70}${color white}\
-    y${voffset -8}${font Exo 2:size=20} ${execpi 90 sed -n '3p' ${template1}conditions}°F \
-(${execpi 90 sed -n '4p' ${template1}conditions}°F)\
-${endif}${endif}\
-\
-${if_match ${execpi 90 sed -n '3p' ${template1}conditions} >= 70}\
-${if_match ${execpi 90 sed -n '3p' ${template1}conditions} <90}${color orange}\
-    y${voffset -8}${font Exo 2:size=20} ${execpi 90 sed -n '3p' ${template1}conditions}°F \
-(${execpi 90 sed -n '4p' ${template1}conditions}°F)\
-${endif}${endif}\
-${if_match ${execpi 90 sed -n '3p' ${template1}conditions} >= 90}${color red}\
-    y${voffset -8}${font Exo 2:size=20} ${execpi 90 sed -n '3p' ${template1}conditions}°F \
-(${execpi 90 sed -n '4p' ${template1}conditions}°F)\
-${endif}${font}
-\
-${voffset 10}${goto 107}${font Exo 2 Medium:size=15}${color3}${execpi 90 sed -n '2p' ${template1}conditions}
+${voffset -70}${goto 107}${font Exo 2 Medium:size=15}${color3}${execpi 90 sed -n '2p' ${template1}conditions}
 \
 \
 ## DAYTIME INFO ##################
