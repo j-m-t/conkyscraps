@@ -375,7 +375,9 @@ if __name__ == "__main__":
                                            .strip('°'),
                                            'temp', scale, args.scale)
     weather['windicon'] = image_conkywindnesw[wind_icon]
-    weather['wind_spd'] = misc[1].text
+    weather['wind_spd'] = (convert_item(misc[1].text.split()[0], 'dist',
+                                        scale, args.scale)
+                           + units_conversion[args.scale + 'speed'])
     weather['humidity'] = misc[-7].text.split(': ')[1]
     weather['pressure'] = misc[-6].text.split(': ')[1]
     weather['uv_index'] = misc[-5].text.split(': ')[1]
