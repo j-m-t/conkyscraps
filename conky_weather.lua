@@ -64,7 +64,7 @@ conky.config = {
     color8 = "DimGray",
     color9 = 'tomato',
 
-    lua_load = '/path/to/weather/conky_draw.lua',
+    lua_load = '/path/to/conky_draw.lua',
     lua_draw_hook_pre = 'main',
 
     template1 = '/path/to/conkyscraps/weather/',
