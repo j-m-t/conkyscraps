@@ -18,10 +18,10 @@ elements = {
     kind = 'temperature_text',
     scale = 'execpi 90 sed -n "40p" /path/to/weather/conditions',
     temp = 'execpi 90 sed -n "3p" /path/to/weather/conditions',
-    thermometer = true,
     parentheses = false,
     from = {x = 126, y = 101},
     colors = {0x00FFFF, 0xFFFFFF, 0xFFA500, 0xFF0000},
+    grades = {10, 20, 30},
     rotation_angle = 0,
     font = "Exo 2",
     font_size = 28,
@@ -34,10 +34,10 @@ elements = {
     kind = 'temperature_text',
     scale = 'execpi 90 sed -n "40p" /path/to/weather/conditions',
     temp = 'execpi 90 sed -n "4p" /path/to/weather/conditions',
-    thermometer = false,
     parentheses = true,
     from = {x = 194, y = 101},
     colors = {0x00FFFF, 0xFFFFFF, 0xFFA500, 0xFF0000},
+    grades = {10, 20, 30},
     rotation_angle = 0,
     font = "Exo 2",
     font_size = 28,
@@ -46,7 +46,3 @@ elements = {
     alpha = 1
   }
 }
-
-
-
-
