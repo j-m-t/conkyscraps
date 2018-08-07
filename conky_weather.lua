@@ -70,8 +70,9 @@ conky.config = {
     template1 = '/path/to/conkyscraps/weather/',
     template2 = '/path/to/conkyscraps/wikipedia/',
     template3 = '/en/us/washington-dc/20006/weather-forecast/327659',
-    template4 = 'C',
-    template5 = '50'}
+    template4 = 'C',  -- Changing this will require a change in the grades in weather_conky_draw.lua
+    template5 = '50'
+}
 
 conky.text = [[
 ##################################
