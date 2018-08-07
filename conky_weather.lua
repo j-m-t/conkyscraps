@@ -95,9 +95,9 @@ ${voffset -70}${goto 107}${font Exo 2 Medium:size=15}${color3}${execpi 90 sed -n
 \
 ## DAYTIME INFO ##################
 ${voffset 2}${font Exo 2:size=9}\
-${goto 107}${color3}Visibility: ${color2}${goto 177}${execpi 90 sed -n '12p' ${template1}conditions}\
+${goto 107}${color3}Visibility: ${color2}${alignr 30}${execpi 90 sed -n '12p' ${template1}conditions}\
 ${goto 220}${color3}Sunrise: ${color2}${alignr}${execpi 90 sed -n '13p' ${template1}conditions}
-${goto 107}${color3}UV Index: ${color2}${goto 197}${execpi 90 sed -n '9p' ${template1}conditions}\
+${goto 107}${color3}UV Index: ${color2}${alignr 26}${execpi 90 sed -n '9p' ${template1}conditions}\
 ${goto 220}${color3}Duration: ${color2}${alignr}${execpi 90 sed -n '15p' ${template1}conditions}
 ${goto 220}${color3}Sunset: ${color2}${alignr}${execpi 90 sed -n '14p' ${template1}conditions}
 \
@@ -106,12 +106,12 @@ ${goto 220}${color3}Sunset: ${color2}${alignr}${execpi 90 sed -n '14p' ${templat
 ${voffset 7}${goto 107}${color3}${font Exo 2:size=13}${execpi 90 sed -n '34p' ${template1}conditions}
 \
 ${voffset 2}${goto 107}${font Exo 2:size=9}Amount: ${color2}\
-${goto 177}${execpi 90 sed -n '35p' ${template1}conditions}\
+${alignr 45}${execpi 90 sed -n '35p' ${template1}conditions}\
 ${goto 220}${color3}Time: ${color2}\
 ${alignr}${execpi 90 sed -n '36p' ${template1}conditions}
 \
 ${voffset 0}${goto 107}${color3}${font Exo 2:size=9}Humidity: ${color2}\
-${goto 185}${execpi 90 sed -n '7p' ${template1}conditions}\
+${alignr 28}${execpi 90 sed -n '7p' ${template1}conditions}\
 ${goto 220}${color3}Dew Point: ${color2}\
 ${alignr}${execpi 90 sed -n '11p' ${template1}conditions}°
 \
@@ -124,12 +124,12 @@ ${voffset -44}${goto 107}${color3}${font Exo 2:size=13}${execpi 90 sed -n '19p' 
 \
 ${voffset 2}${font Exo 2:size=9}\
 ${goto 107}${color3}Cloud Cover: ${color2}\
-${goto 185}${execpi 90 sed -n '10p' ${template1}conditions}\
+${alignr 22}${execpi 90 sed -n '10p' ${template1}conditions}\
 ${goto 220}${color3}Moonrise: ${color2}\
 ${alignr}${execpi 90 sed -n '16p' ${template1}conditions}
 \
 ${goto 107}${color3}Illumination: ${color2}\
-${goto 185}${execpi 90 sed -n '20p' ${template1}conditions}\
+${alignr 24}${execpi 90 sed -n '20p' ${template1}conditions}\
 ${goto 220}${color3}Duration: ${color2}\
 ${alignr}${execpi 90 sed -n '18p' ${template1}conditions}
 \
