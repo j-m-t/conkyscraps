@@ -495,17 +495,99 @@ function draw_temperature_text(display, element)
   end
   cairo_show_text (display,text)
 
-  -- Print thermometer
-  if element.thermometer then
-    cairo_move_to (display,element.from.x-18,element.from.y+11)
-    cairo_set_font_size (display, element.font_size+20)
-    cairo_select_font_face(display,'Weather',font_slant,font_weight)
-    cairo_show_text (display,'y')
-  end
-
   cairo_restore(display)
   cairo_stroke (display)
 end
+
+
+function draw_thermometer(display, element)
+
+  local temp_value = get_conky_value(element.temp,true)
+  local color = temperature_color(temp_value,element.colors,element.grades)
+  cairo_set_source_rgba(display, hexa_to_rgb(color, element.alpha))
+  cairo_set_line_width(display, element.thickness);
+  cairo_set_line_cap(display, CAIRO_LINE_CAP_ROUND)
+
+  -- Draw a ring for the bottom of the thermometer
+  -- We are setting a gap equal to 70 degrees: (360-55)-235
+  local start_angle, end_angle = math.rad(-55), math.rad(235)
+
+  local thermo_bottom = cairo_arc
+  -- draw the ring
+  thermo_bottom(display, element.center.x, element.center.y, element.radius, start_angle, end_angle)
+  cairo_stroke(display);
+
+  -- Draw the 'mercury' at the bottom of the ring.
+  local mercury = cairo_arc
+  mercury(display, element.center.x, element.center.y, element.radius-element.thickness, 0, 2*math.pi)
+  cairo_close_path (display)
+  cairo_fill (display)
+  cairo_stroke(display)
+  -- Add a rectangle to level off the top
+  cairo_rectangle(display, element.center.x - math.cos(math.rad(55))*element.radius + element.thickness,
+                  element.center.y - math.sin(math.rad(55))*element.radius,
+                  2*(math.cos(math.rad(55))*element.radius - element.thickness),
+                  math.sin(math.rad(55))*element.radius)
+  cairo_fill(display)
+
+  -- Draw sides of the thermometer
+  -- left line
+  left_line = {
+    from = {x = element.center.x - math.cos(math.rad(55))*element.radius,
+            y = element.center.y - math.sin(math.rad(55))*element.radius},
+    to = {x = element.center.x - math.cos(math.rad(55))*element.radius,
+          y = element.center.y - math.sin(math.rad(55))*element.radius - element.height},
+
+    color = color,
+    alpha = element.alpha,
+    thickness = element.thickness
+  }
+  draw_line(display, left_line)
+  -- right line
+  right_line = {
+    from = {x = element.center.x + math.cos(math.rad(55))*element.radius,
+            y = element.center.y - math.sin(math.rad(55))*element.radius},
+    to = {x = element.center.x + math.cos(math.rad(55))*element.radius,
+          y = element.center.y - math.sin(math.rad(55))*element.radius - element.height},
+
+    color = color,
+    alpha = element.alpha,
+    thickness = element.thickness
+  }
+  draw_line(display, right_line)
+
+  -- Draw cap of the thermometer
+  local thermo_cap = cairo_arc
+  thermo_bottom(display, element.center.x,
+                element.center.y - math.sin(math.rad(55))*element.radius - element.height,
+                math.cos(math.rad(55))*element.radius, math.pi, 2*math.pi)
+  cairo_stroke(display)
+
+  -- Create bar graph for temperature
+  mercury_value = {
+    conky_value = tostring(element.temp),
+    from = {x = element.center.x, y = element.center.y - math.sin(math.rad(55))*element.radius},
+    to = {x = element.center.x, y = element.center.y - math.sin(math.rad(55))*element.radius - element.height},
+
+    max_value = element.maxtemp,
+    critical_threshold = 0.90*element.maxtemp,
+
+    bar_color = color,
+    bar_alpha = 1,
+    bar_thickness = 2*(math.cos(math.rad(55))*element.radius - element.thickness),
+
+    background_color = 0x00E5FF,
+    background_alpha = 0,
+    background_thickness = math.cos(math.rad(55))*element.radius,
+
+    change_color_on_critical = false,
+    change_alpha_on_critical = false,
+    change_thickness_on_critical = false,
+    graduated = false
+  }
+  draw_bar_graph(display, mercury_value)
+end
+
 
 function draw_clock(display, element)
     error('clock element kind not implemented')
