@@ -489,7 +489,7 @@ function draw_temperature_text(display, element)
     font_weight=CAIRO_FONT_WEIGHT_BOLD
   end
   cairo_select_font_face(display,element.font,font_slant,font_weight)
-  local text = tostring(temp_value)..'°'..temp_scale
+  local text = tostring(temp_value)..'°'..string.sub(temp_scale, 1, 1)
   if element.parentheses then
     text = '('..text..')'
   end
