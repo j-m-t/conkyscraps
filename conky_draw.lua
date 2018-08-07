@@ -605,7 +605,8 @@ requirements = {
     ellipse_graph ={'center', 'radius', 'width','height','conky_value'},
     variable_text = {'from','conky_value'},
     static_text = {'from','text'},
-    temperature_text = {'from','scale','temp'},
+    temperature_text = {'from','scale','temp','colors','grades'},
+    thermometer = {'center','temp','maxtemp','colors','grades'},
     clock = {},
 }
 
@@ -770,7 +771,6 @@ defaults = {
     temperature_text = {
       thermometer = false,
       parentheses = false,
-      colors = {0x00FFFF, 0xFFFFFF, 0xFFA500, 0xFF0000},
       rotation_angle=0,
       font="Liberation Sans",
       font_size=12,
@@ -778,6 +778,17 @@ defaults = {
       italic=false,
       alpha=1.0,
       draw_function = draw_temperature_text,
+    },
+    thermometer = {
+      color = 0x00FF6E,
+      alpha = 0.2,
+      radius = 5,
+      height = 25,
+      thickness = 5,
+      graduated = false,
+      number_graduation=0,
+      angle_between_graduation=1,
+      draw_function = draw_thermometer
     },
     clock = {
         draw_function = draw_clock,
