@@ -8,25 +8,15 @@ function hexa_to_rgb(color, alpha)
 end
 
 
-function temperature_color(scale, temp, colors)
+function temperature_color(temp, colors, grades)
   -- Converts the text color of the temperature according to temperature value.
-  -- As of now, we have 4 color categories, but more could be easily generated.
-  local temp_grades = {0,50,100}
-  --scale = tostring(scale)
-  if scale == 'F' then
-    temp_grades = {50, 70, 90}
-  elseif scale == 'C' then
-    temp_grades = {10, 20, 30}
-  end
   temp = tonumber(temp)
-  if  temp<=temp_grades[1] then
-    color = colors[1]
-  elseif temp<temp_grades[2] then
-    color = colors[2]
-  elseif temp<temp_grades[3] then
-    color = colors[3]
-  elseif temp_grades[3]<=temp then
-    color = colors[4]
+  for i = 1, #grades do
+    if temp<grades[i] then
+      color = colors[i]
+      break
+    else color = colors[i+1]
+    end
   end
   return color
 end
@@ -487,7 +477,7 @@ function draw_temperature_text(display, element)
   cairo_rotate(display,element.rotation_angle* (math.pi / 180))
   local temp_scale = get_conky_value(element.scale,false)
   local temp_value = get_conky_value(element.temp,true)
-  local color = temperature_color(temp_scale,temp_value,element.colors),
+  local color = temperature_color(temp_value,element.colors,element.grades),
   cairo_set_source_rgba(display,hexa_to_rgb(color, element.alpha))
   cairo_set_font_size (display, element.font_size)
   local font_slant = CAIRO_FONT_SLANT_NORMAL
