@@ -262,7 +262,7 @@ ${voffset 4}${font Orbitron:size=12}${color4}Date${offset 4}${color8}${voffset -
 \
 ## The calendar
 ${voffset 10}${font Inconsolata:size=11}${color3}\
-${execpi 60 cal -h | sed -e '1d' -e s/^/"\$\{goto 40\}"/ -e 's/\<'`date +%-d`'\>/${color9}&${color3}/'}
+${execpi 60 ncal -bh | sed -e '1d' -e s/^/"\$\{goto 40\}"/ -e 's/\<'`date +%-d`'\>/${color9}&${color3}/'}
 \
 ## The day, date, month, and year box
 ${voffset -115}${font CutOutsFor3DFX:size=80}${color8}${alignc -53.5}2${font}
