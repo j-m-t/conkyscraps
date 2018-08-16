@@ -1,5 +1,5 @@
 # conkyscraps
-A collection of scripts for Conky configurations
+A collection of Python scripts for Conky configurations
 
 ### Weather
 Gathers weather and lunar forecasts, with thanks to TeoBigusGeekus for inspiration.
@@ -10,8 +10,13 @@ Presents historical events for this day in history.
 ### Screenshot
 [![screenshot](https://github.com/j-m-t/conkyscraps/blob/master/img/conky_weather.png)](https://github.com/j-m-t/conkyscraps/blob/master/img/conky_weather.png)
 
+### Requirements
+These scripts are set up to run with Python 3. The only extra packment requirement is ```BeautifulSoup```.  You also need ```Conky```, of course.
+
+
 ### How to use
 Paths need to be adjusted in 2 files before running this script:
+
 In *conky_weather.lua*:
 * `lua_load = '/path/to/conky_draw.lua'`: This needs to be directed to where the conky-draw script is located
 * `lua_draw_hook_pre = 'main'`: No change needed
