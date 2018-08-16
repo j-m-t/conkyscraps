@@ -1,4 +1,5 @@
 require 'cairo'
+package.path = package.path .. ';' .. os.getenv("HOME") .. '/.conky/conkyscraps/?.lua'
 require 'weather_conky_draw'
 
 

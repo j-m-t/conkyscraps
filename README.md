@@ -17,13 +17,13 @@ These scripts are set up to run with Python 3. The only extra packment requireme
 The easiest way to use this is to clone the repository in `~/.conky`:
 
 ```bash
-mkdir ~/.conky
+mkdir ~/.conky && cd ~/.conky
 git clone https://github.com/j-m-t/conkyscraps.git
 ```
 
 Next, there are some default options in `conky_weather.lua` that you might want to adjust:
 
-* `template3 = '/en/us/washington-dc/20006/weather-forecast/327659'`: This is trailing URL information from the Accuweather address `https://www.accuweather.com/` for your city of choice.
+* `template3 = '/en/us/washington-dc/20006/weather-forecast/327659'`: This is the trailing URL information from the Accuweather address (`https://www.accuweather.com/`) for your city of choice.
 * `template4 = 'C'`: Your choice of Celsius/metric (C) or Fahrenheit/imperial (F)
 * `template5 = '50'`: The number of characters per line in the history section, to make it easier to tweak your Conky configuration.
 
