@@ -13,24 +13,21 @@ Presents historical events for this day in history.
 ### Requirements
 These scripts are set up to run with Python 3. The only extra packment requirement is ```BeautifulSoup```.  You also need ```Conky```, of course.
 
-
 ### How to use
-Paths need to be adjusted in 2 files before running this script:
+The easiest way to use this is to clone the repository in `~/.conky`:
 
-In *conky_weather.lua*:
-* `lua_load = '/path/to/conky_draw.lua'`: This needs to be directed to where the conky-draw script is located
-* `lua_draw_hook_pre = 'main'`: No change needed
-* `template1 = '/path/to/conkyscraps/weather/'`: This should point to where conditions_parse.py is located
-* `template2 = '/path/to/conkyscraps/wikipedia/'`: This should point to where wikipedia_today_scrape.py is located
-* `template3 = '/en/us/washington-dc/20006/weather-forecast/327659'`: This is from Accuweather 
+```bash
+mkdir ~/.conky
+git clone https://github.com/j-m-t/conkyscraps.git
+```
+
+Next, there are some default options in `conky_weather.lua` that you might want to adjust:
+
+* `template3 = '/en/us/washington-dc/20006/weather-forecast/327659'`: This is trailing URL information from the Accuweather address `https://www.accuweather.com/` for your city of choice.
 * `template4 = 'C'`: Your choice of Celsius/metric (C) or Fahrenheit/imperial (F)
-* `template5 = '50'`: The number of characters per line in the history section
+* `template5 = '50'`: The number of characters per line in the history section, to make it easier to tweak your Conky configuration.
 
-In *weather_conky_draw.lua*:
-* `scale = 'execpi 90 sed -n "40p" /path/to/weather/conditions'`: Change the path to the `weather` subdirectory
-* `temp = 'execpi 90 sed -n "3p" /path/to/weather/conditions'`: Likewise, change the path to the `weather` subdirectory
-
-This should be done for all the scale or temp paths in `weather_conky_draw.lua`.
+The first time this script runs, there will be a short lag as Python scrapes the websites and generates the raw text files.
 
 ### Fonts
 I use `Exo 2` for most of the text, and `Orbitron` for the headers.  Both are available from Google Fonts.  For the Wiki text, I use `Linux Libertine`.  I also use Inconsolata for the calendar (a monospace font is needed). `conkyweather`, `ConkyWindNESW`, `MoonPhases`, and `CutOutsFor3DFX` are also used.
