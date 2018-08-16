@@ -64,11 +64,11 @@ conky.config = {
     color8 = "DimGray",
     color9 = 'tomato',
 
-    lua_load = '/path/to/conky_draw.lua',
+    lua_load = '~/.conky/conkyscraps/conky_draw.lua',
     lua_draw_hook_pre = 'main',
 
-    template1 = '/path/to/conkyscraps/weather/',
-    template2 = '/path/to/conkyscraps/wikipedia/',
+    template1 = '~/.conky/conkyscraps/weather/',
+    template2 = '~/.conky/conkyscraps/wikipedia/',
     template3 = '/en/us/washington-dc/20006/weather-forecast/327659',
     template4 = 'C',  -- Changing this will require a change in the grades in weather_conky_draw.lua
     template5 = '50'
