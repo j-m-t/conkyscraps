@@ -75,3 +75,52 @@ optional arguments:
 ```
 Like before, the only required argument is the directory to save the raw data.
 
+## Lua script details
+
+I extended [`conky-draw`](https://github.com/fisadev/conky-draw) to create custom graphics for my Conky configuration.  These functions can change color based on the `colors` and `grades` arguments passed into it via the configuration in `weather_conky_draw.lua`.
+
+### thermometer
+
+This generates a thermometer that reflects the temperature passed into it, both by the color of the graphic and the 'mercury' level in the thermometer.
+
+[![screenshot](https://github.com/j-m-t/conkyscraps/blob/master/img/thermometer.png)](https://github.com/j-m-t/conkyscraps/blob/master/img/thermometer.png)
+
+```lua
+  {
+    kind = 'thermometer',
+    temp = 'execpi 90 sed -n "3p" ~/.conky/conkyscraps/weather/conditions',
+    maxtemp = 100,
+    center = {x = 120, y = 405},
+    radius = 25,
+    color = 0x00E5FF,
+    alpha = 1,
+    thickness = 5,
+    height = 100,
+    colors = {0x00FFFF, 0xFFFFFF, 0xFFA500, 0xFF0000},
+    grades = {50, 70, 90}
+  }
+```
+
+### temperature_text
+
+This is a simple function that changes the text color according to an variable value (such as temperature).  I also included an argment that captures the scale of the variable so that it changes color too.
+
+[![screenshot](https://github.com/j-m-t/conkyscraps/blob/master/img/temperature.png)](https://github.com/j-m-t/conkyscraps/blob/master/img/temperature.png)
+
+```lua
+  {
+    kind = 'temperature_text',
+    scale = 'execpi 90 sed -n "40p" ~/.conky/conkyscraps/weather/conditions',
+    temp = 'execpi 90 sed -n "3p" ~/.conky/conkyscraps/weather/conditions',
+    parentheses = false,
+    from = {x = 126, y = 101},
+    colors = {0x00FFFF, 0xFFFFFF, 0xFFA500, 0xFF0000},
+    grades = {40, 60, 80},
+    rotation_angle = 0,
+    font = "Exo 2",
+    font_size = 48,
+    bold = false,
+    italic = false,
+    alpha = 1
+  }
+```
