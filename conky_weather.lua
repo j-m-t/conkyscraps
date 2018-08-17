@@ -84,7 +84,7 @@ ${texeci 90 python3 ${template1}conditions_parse.py ${template1} ${template3} ${
 ${font Exo 2:size=10.5}
 ${goto 107}${color3}${execi 90 sed -n '37p' ${template1}conditions}
 ${goto 107}${color3}${execi 90 sed -n '38p' ${template1}conditions}
-${voffset 15}${goto 5}${font conkyweather:size=70}${color3}${execi 90 sed -n '1p' ${template1}conditions}${font}
+${voffset 15}${goto 5}${font conkyweather:size=70}${color2}${execi 90 sed -n '1p' ${template1}conditions}${font}
 \
 \
 ## TEMPERATURE COLORS ############
@@ -124,7 +124,7 @@ ${voffset -44}${goto 107}${color3}${font Exo 2:size=13}${execpi 90 sed -n '19p' 
 \
 ${voffset 2}${font Exo 2:size=9}\
 ${goto 107}${color3}Cloud Cover: ${color2}\
-${alignr 22}${execpi 90 sed -n '10p' ${template1}conditions}\
+${alignr 19}${execpi 90 sed -n '10p' ${template1}conditions}\
 ${goto 220}${color3}Moonrise: ${color2}\
 ${alignr}${execpi 90 sed -n '16p' ${template1}conditions}
 \
