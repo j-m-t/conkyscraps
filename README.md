@@ -103,7 +103,7 @@ This generates a thermometer that reflects the temperature passed into it, both 
 
 ### temperature_text
 
-This is a simple function that changes the text color according to an variable value (such as temperature).  I also included an argment that captures the scale of the variable so that it changes color too.
+This is a simple function that changes the text color according to an variable value (such as temperature).  I also included an argument that captures the scale of the variable so that it changes color too.
 
 [![screenshot](https://github.com/j-m-t/conkyscraps/blob/master/img/temperature.png)](https://github.com/j-m-t/conkyscraps/blob/master/img/temperature.png)
 
