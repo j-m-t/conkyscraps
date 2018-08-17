@@ -30,4 +30,12 @@ Next, there are some default options in `conky_weather.lua` that you might want 
 The first time this script runs, there will be a short lag as Python scrapes the websites and generates the raw text files.
 
 ### Fonts
-I use `Exo 2` for most of the text, and `Orbitron` for the headers.  Both are available from Google Fonts.  For the Wiki text, I use `Linux Libertine`.  I also use Inconsolata for the calendar (a monospace font is needed). `conkyweather`, `ConkyWindNESW`, `MoonPhases`, and `CutOutsFor3DFX` are also used.
+All fonts should be placed in `/usr/local/share/fonts/` in order to be accessible by Conky.
+
+The weather icons come from `ConkyWeather.ttf`, and the wind icons come from `ConkyWindNESW.otf`.  Both are included in [TeoBigusGeekus' original Accuweather shell scripts](http://bit.ly/1_11-11-17). The moon icons come from [`MoonPhases`](https://www.dafont.com/moon-phases.font) - thanks to [Curtis Clark](https://www.cpp.edu/~jcclark/) for providing these.
+
+I use `Exo 2` for most of the text, `Orbitron` for the headers, and Inconsolata for the calendar (a monospace font is needed).  All are available at [Google Fonts](https://fonts.google.com/?selection.family=Exo+2|Inconsolata|Orbitron).
+
+For the history text, I use `Linux Libertine`, which is available [here](http://libertine-fonts.org/download/).
+
+Finally, `CutOutsFor3DFX` is also used.
