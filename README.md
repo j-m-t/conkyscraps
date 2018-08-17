@@ -1,9 +1,6 @@
 # conkyscraps
 A collection of Python scripts for Conky configurations
 
-### History
-Presents historical events for this day in history.
-
 ### Screenshot
 [![screenshot](https://github.com/j-m-t/conkyscraps/blob/master/img/conky_weather.png)](https://github.com/j-m-t/conkyscraps/blob/master/img/conky_weather.png)
 
@@ -36,6 +33,7 @@ I use `Exo 2` for most of the text, `Orbitron` for the headers, and Inconsolata 
 For the history text, I use `Linux Libertine`, which is available [here](http://libertine-fonts.org/download/).
 
 Finally, `CutOutsFor3DFX` is also used.
+
 ## Python script details
 
 The arguments needed for the Python scripts are passed from the `conky_weather.lua` Conky configuration, but these Python sscripts can be used on their own.
@@ -57,4 +55,23 @@ optional arguments:
   -h, --help  show this help message and exit
 ```
 The only required argument is the directory to save the raw data - it is a good idea to test this script with `python3 conditions_parse.py .` to make sure that it works on your system.
+
+### History
+The `wikipedia` directory contains the script `wikipedia_today_scrape.py`, which scrapes Wikipedia for historical events for this day in history.  So far there is only support for English, but I'm thinking of adding other languages as well.
+
+The basic usage of the scripts follows:
+```bash
+python3 wikipedia_today_scrape.py -h
+usage: wikipedia_today_scrape.py [-h] outputpath [width]
+
+Scrape and parse Wikipedia history information
+
+positional arguments:
+  outputpath  Directory where output from script will be saved
+  width       Length of lines in output
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+Like before, the only required argument is the directory to save the raw data.
 
