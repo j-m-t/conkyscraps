@@ -1,9 +1,6 @@
 # conkyscraps
 A collection of Python scripts for Conky configurations
 
-### Weather
-Gathers weather and lunar forecasts, with thanks to TeoBigusGeekus for inspiration.
-
 ### History
 Presents historical events for this day in history.
 
@@ -39,3 +36,25 @@ I use `Exo 2` for most of the text, `Orbitron` for the headers, and Inconsolata 
 For the history text, I use `Linux Libertine`, which is available [here](http://libertine-fonts.org/download/).
 
 Finally, `CutOutsFor3DFX` is also used.
+## Python script details
+
+The arguments needed for the Python scripts are passed from the `conky_weather.lua` Conky configuration, but these Python sscripts can be used on their own.
+
+### weather
+The `weather` directory contains the Python script `conditions_parse.py`, which scrapes Accuweather for current conditions are seven-day forecasts.  The script also scrapes Moongiant for lunar data.  Many thanks to TeoBigusGeekus for inspiration.  The basic usage of the scripts follows:
+```bash
+python3 conditions_parse.py -h
+usage: conditions_parse.py [-h] outputpath [loc] [scale]
+
+Scrape and parse Accuweather and Moongiant websites
+
+positional arguments:
+  outputpath  Directory where output from script will be saved
+  loc         Info for Accuweather localization
+  scale       Desired temperature scale; either 'C' or 'F'
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+The only required argument is the directory to save the raw data - it is a good idea to test this script with `python3 conditions_parse.py .` to make sure that it works on your system.
+
