@@ -64,14 +64,15 @@ conky.config = {
     color8 = "DimGray",
     color9 = 'tomato',
 
-    lua_load = '/path/to/conky_draw.lua',
+    lua_load = '~/.conky/conkyscraps/conky_draw.lua',
     lua_draw_hook_pre = 'main',
 
-    template1 = '/path/to/conkyscraps/weather/',
-    template2 = '/path/to/conkyscraps/wikipedia/',
+    template1 = '~/.conky/conkyscraps/weather/',
+    template2 = '~/.conky/conkyscraps/wikipedia/',
     template3 = '/en/us/washington-dc/20006/weather-forecast/327659',
-    template4 = 'C',
-    template5 = '50'}
+    template4 = 'C',  -- Changing this will require a change in the grades in weather_conky_draw.lua
+    template5 = '50'
+}
 
 conky.text = [[
 ##################################
@@ -83,7 +84,7 @@ ${texeci 90 python3 ${template1}conditions_parse.py ${template1} ${template3} ${
 ${font Exo 2:size=10.5}
 ${goto 107}${color3}${execi 90 sed -n '37p' ${template1}conditions}
 ${goto 107}${color3}${execi 90 sed -n '38p' ${template1}conditions}
-${voffset 15}${goto 5}${font conkyweather:size=70}${color3}${execi 90 sed -n '1p' ${template1}conditions}${font}
+${voffset 15}${goto 5}${font conkyweather:size=70}${color2}${execi 90 sed -n '1p' ${template1}conditions}${font}
 \
 \
 ## TEMPERATURE COLORS ############
@@ -94,9 +95,9 @@ ${voffset -70}${goto 107}${font Exo 2 Medium:size=15}${color3}${execpi 90 sed -n
 \
 ## DAYTIME INFO ##################
 ${voffset 2}${font Exo 2:size=9}\
-${goto 107}${color3}Visibility: ${color2}${goto 177}${execpi 90 sed -n '12p' ${template1}conditions}\
+${goto 107}${color3}Visibility: ${color2}${alignr 30}${execpi 90 sed -n '12p' ${template1}conditions}\
 ${goto 220}${color3}Sunrise: ${color2}${alignr}${execpi 90 sed -n '13p' ${template1}conditions}
-${goto 107}${color3}UV Index: ${color2}${goto 197}${execpi 90 sed -n '9p' ${template1}conditions}\
+${goto 107}${color3}UV Index: ${color2}${alignr 26}${execpi 90 sed -n '9p' ${template1}conditions}\
 ${goto 220}${color3}Duration: ${color2}${alignr}${execpi 90 sed -n '15p' ${template1}conditions}
 ${goto 220}${color3}Sunset: ${color2}${alignr}${execpi 90 sed -n '14p' ${template1}conditions}
 \
@@ -105,12 +106,12 @@ ${goto 220}${color3}Sunset: ${color2}${alignr}${execpi 90 sed -n '14p' ${templat
 ${voffset 7}${goto 107}${color3}${font Exo 2:size=13}${execpi 90 sed -n '34p' ${template1}conditions}
 \
 ${voffset 2}${goto 107}${font Exo 2:size=9}Amount: ${color2}\
-${goto 177}${execpi 90 sed -n '35p' ${template1}conditions}\
+${alignr 45}${execpi 90 sed -n '35p' ${template1}conditions}\
 ${goto 220}${color3}Time: ${color2}\
 ${alignr}${execpi 90 sed -n '36p' ${template1}conditions}
 \
 ${voffset 0}${goto 107}${color3}${font Exo 2:size=9}Humidity: ${color2}\
-${goto 185}${execpi 90 sed -n '7p' ${template1}conditions}\
+${alignr 28}${execpi 90 sed -n '7p' ${template1}conditions}\
 ${goto 220}${color3}Dew Point: ${color2}\
 ${alignr}${execpi 90 sed -n '11p' ${template1}conditions}°
 \
@@ -123,12 +124,12 @@ ${voffset -44}${goto 107}${color3}${font Exo 2:size=13}${execpi 90 sed -n '19p' 
 \
 ${voffset 2}${font Exo 2:size=9}\
 ${goto 107}${color3}Cloud Cover: ${color2}\
-${goto 185}${execpi 90 sed -n '10p' ${template1}conditions}\
+${alignr 19}${execpi 90 sed -n '10p' ${template1}conditions}\
 ${goto 220}${color3}Moonrise: ${color2}\
 ${alignr}${execpi 90 sed -n '16p' ${template1}conditions}
 \
 ${goto 107}${color3}Illumination: ${color2}\
-${goto 185}${execpi 90 sed -n '20p' ${template1}conditions}\
+${alignr 24}${execpi 90 sed -n '20p' ${template1}conditions}\
 ${goto 220}${color3}Duration: ${color2}\
 ${alignr}${execpi 90 sed -n '18p' ${template1}conditions}
 \
@@ -261,7 +262,7 @@ ${voffset 4}${font Orbitron:size=12}${color4}Date${offset 4}${color8}${voffset -
 \
 ## The calendar
 ${voffset 10}${font Inconsolata:size=11}${color3}\
-${execpi 60 cal -h | sed -e '1d' -e s/^/"\$\{goto 40\}"/ -e 's/\<'`date +%-d`'\>/${color9}&${color3}/'}
+${execpi 60 ncal -bh | sed -e '1d' -e s/^/"\$\{goto 40\}"/ -e 's/\<'`date +%-d`'\>/${color9}&${color3}/'}
 \
 ## The day, date, month, and year box
 ${voffset -115}${font CutOutsFor3DFX:size=80}${color8}${alignc -53.5}2${font}
