@@ -27,7 +27,9 @@ args = parser.parse_args()
 
 BASEADDRESS = 'http://www.accuweather.com/'
 MOON_ADDRESS = 'http://www.moongiant.com/phase/today'
-HEADERS = {'user-agent': 'my-app/0.0.1'}
+# A list of different user-agent headers, for redundancy
+REQUEST_HEADERS = {'user-agent': 'my-app/0.0.1'}
+WGET_HEADERS = {'user-agent': 'wget/1.18'}
 
 # Dictionary for matching the Accuweather image label with the
 # Conkyweather font letters
@@ -288,9 +290,16 @@ def strain_forecast(soup):
 
 
 if __name__ == "__main__":
-    # Check that we have interent connection
+    # Check that we have interent connection (using EAFP principle)
+    # Admittedly, this isn't as clean as I would like.
     try:
-        response = requests.get(BASEADDRESS, headers=HEADERS)
+        HEADERS = REQUEST_HEADERS
+        requests.get(BASEADDRESS, headers=REQUEST_HEADERS, timeout=3.05)
+    except Exception as e:
+        HEADERS = WGET_HEADERS
+        pass
+    try:
+        requests.get(BASEADDRESS, headers=WGET_HEADERS, timeout=3.05)
     except Exception as e:
         sys.exit()
 
