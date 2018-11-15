@@ -326,9 +326,9 @@ if __name__ == "__main__":
 
     # Strain soup for daily forecasts
     panel_list = curr_cond.find_all("div",
-                                    class_="panel-list")[1].find_all("li")
+                                    class_="panel-list")[0].find_all("li")
     extended_list = final_cond.find_all("div",
-                                        class_="panel-list")[1].find_all("li")
+                                        class_="panel-list")[0].find_all("li")
 
     # Get moon phase info
     moon_info = BeautifulSoup(requests.get(MOON_ADDRESS,
