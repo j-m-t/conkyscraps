@@ -355,13 +355,11 @@ if __name__ == "__main__":
                  .split('moon_day_')[-1].split('.')[0])
 
     # Determine temperature scale used in HTML
-    scale = curr_cond.find(checked="checked").get("value")
-    if scale == 'celsius':
-        scale = 'C'
-    else:
-        # I think Accuweather misspells Fahrenheit (as 'farenheit).
-        # I don't see Accuweather using Kelvin or other scales anytime soon.
-        scale = 'F'
+    scale = panel_list[0].find_all("span")[1].text[-1]
+    # [2018-11-15 Thu] Accuweather changed their setup, and now there is no
+    #     specific declaration of the scale used on the page, so I scrape it
+    #     from the first daily forecast.
+    # I don't see Accuweather using Kelvin or other scales anytime soon.
 
     # Collect the weather information
     # NOTE: I strip the degree symbol to be able to do conditional comparisons
