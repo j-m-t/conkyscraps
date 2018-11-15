@@ -240,13 +240,15 @@ def wordwrap(text):
     return output
 
 
-def strain_forecast(soup):
+def strain_forecast(soup, in_scale='C', out_scale='C'):
     """
     'Strains' the daily forecasts from the data in Accuweather websites.
 
     Args:
         soup (bs4.element.ResultSet): BeautifulSoup object created with
             '.find_all' command.
+        in_scale (str): Temperature scale found on website.
+        out_scale (str): Temperature scale desired in output.
 
     Returns:
         dict: Dictionary of daily weather forecast with the following keys:
@@ -271,15 +273,15 @@ def strain_forecast(soup):
             dailyinfo['high'] = dailysoup('span')[1].text
             dailyinfo['low'] = '/' + convert_item((dailysoup('span')[0].text
                                                    .split('°')[0]),
-                                                  'temp', scale, args.scale)
+                                                  'temp', in_scale, out_scale)
         else:
             dailyinfo['high'] = convert_item((dailysoup('span')[0]
                                               .text.split('°')[0]),
-                                             'temp', scale, args.scale)
+                                             'temp', in_scale, out_scale)
             dailyinfo['low'] = '/' + convert_item((dailysoup('span')[1].text
                                                    .split('°')[0]
                                                    .split('/')[1]),
-                                                  'temp', scale, args.scale)
+                                                  'temp', in_scale, out_scale)
         description = wordwrap(dailysoup('span')[-1].text)
         dailyinfo['line1'] = description[0]
         dailyinfo['line2'] = description[1]
