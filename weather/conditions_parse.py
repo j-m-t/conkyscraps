@@ -298,6 +298,7 @@ if __name__ == "__main__":
 
     # The address for the local weather
     localaddress = args.loc
+    out_scale = args.scale
     address = BASEADDRESS + localaddress
 
     # Get identifier from address
@@ -372,28 +373,28 @@ if __name__ == "__main__":
                                                  .split('-')[1]]
     weather['current_cond'] = forecast[3]("span")[-1].text
     weather['current_temp'] = convert_item(temp[0].text.strip('°'),
-                                           'temp', scale, args.scale)
+                                           'temp', scale, out_scale)
     weather['current_feel'] = convert_item(temp[1].text.split(' ')[1]
                                            .strip('°'),
-                                           'temp', scale, args.scale)
+                                           'temp', scale, out_scale)
     weather['windicon'] = image_conkywindnesw[wind_icon]
     weather['wind_spd'] = (convert_item(misc[1].text.split()[0], 'dist',
-                                        scale, args.scale)
-                           + units_conversion[args.scale + 'speed'])
+                                        scale, out_scale)
+                           + units_conversion[out_scale + 'speed'])
     weather['humidity'] = misc[-7].text.split(': ')[1]
     weather['pressure'] = (convert_item(misc[-6].text
                                         .split(': ')[1].split()[0],
-                                        'pressure', scale, args.scale)
-                           + units_conversion[args.scale + 'pressure'])
+                                        'pressure', scale, out_scale)
+                           + units_conversion[out_scale + 'pressure'])
     weather['uv_index'] = misc[-5].text.split(': ')[1]
     weather['cloudcov'] = misc[-4].text.split(': ')[1]
     weather['dewpoint'] = convert_item((misc[-2].text.split(': ')[1]
                                         .split('°')[0]),
-                                       'temp', scale, args.scale)
+                                       'temp', scale, out_scale)
     weather['visiblty'] = (convert_item(misc[-1].text
                                         .split(': ')[1].split()[0],
-                                        'dist', scale, args.scale)
-                           + units_conversion[args.scale + 'dist'])
+                                        'dist', scale, out_scale)
+                           + units_conversion[out_scale + 'dist'])
     weather['sunrise'] = convert_time(sun("span")[0].text)
     weather['sunset'] = convert_time(sun("span")[1].text)
     weather['suntime'] = skytime(sun, weather['sunrise'],
@@ -411,31 +412,31 @@ if __name__ == "__main__":
     # Make separate dictionary for temperature history
     history = OrderedDict()
     history['high_today'] = convert_item(records[0].text.strip('°'),
-                                         'temp', scale, args.scale)
+                                         'temp', scale, out_scale)
     history['high_mean'] = convert_item(records[1].text.strip('°'),
-                                        'temp', scale, args.scale)
+                                        'temp', scale, out_scale)
     if records[2].text == 'N/A':
         history['high_record'] = 'No record'
         history['high_record_year'] = ''
     else:
         history['high_record'] = convert_item(records[2].text.split('°')[0],
-                                              'temp', scale, args.scale)
+                                              'temp', scale, out_scale)
         history['high_record_year'] = records[2].text.split(' ')[1]
     history['high_last_year'] = convert_item(records[3].text.strip('°'),
-                                             'temp', scale, args.scale)
+                                             'temp', scale, out_scale)
     history['low_today'] = convert_item(records[4].text.strip('°'),
-                                        'temp', scale, args.scale)
+                                        'temp', scale, out_scale)
     history['low_mean'] = convert_item(records[5].text.strip('°'),
-                                       'temp', scale, args.scale)
+                                       'temp', scale, out_scale)
     if records[6].text == 'N/A':
         history['low_record'] = 'No record'
         history['low_record_year'] = ''
     else:
         history['low_record'] = convert_item(records[6].text.split('°')[0],
-                                             'temp', scale, args.scale)
+                                             'temp', scale, out_scale)
         history['low_record_year'] = records[6].text.split(' ')[1]
     history['low_last_year'] = convert_item(records[7].text.strip('°'),
-                                            'temp', scale, args.scale)
+                                            'temp', scale, out_scale)
 
     # Make a dictionary for the precipitation info
     precipitation = OrderedDict()
@@ -443,14 +444,14 @@ if __name__ == "__main__":
     precipitation['inches'] = (convert_item(daily_cond
                                             .find(class_="stats")('li')[2]
                                             .text.split(': ')[1].split()[0],
-                                            'measure', scale, args.scale)
-                               + units_conversion[args.scale + 'measure'])
+                                            'measure', scale, out_scale)
+                               + units_conversion[out_scale + 'measure'])
     precipitation['hours'] = (daily_cond.find(class_="stats")('li')[-2]
                               .text.split(': ')[1])
 
     # Collect forecast information and store in nested dictionaries)
-    daily_forecasts = strain_forecast(panel_list)
-    extended_forecasts = strain_forecast(extended_list)
+    daily_forecasts = strain_forecast(panel_list, scale, out_scale)
+    extended_forecasts = strain_forecast(extended_list, scale, out_scale)
 
     # Create a timestamp
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -469,7 +470,7 @@ if __name__ == "__main__":
     text.write("%s, %s\n" % (city, region))
     text.write("%s\n" % country)
     text.write("%s\n" % now)
-    text.write("%s\n" % args.scale)
+    text.write("%s\n" % out_scale)
     text.close()
     text = open("forecast", "w")
     for x in range(0, 5):
