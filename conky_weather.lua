@@ -64,11 +64,11 @@ conky.config = {
     color8 = "DimGray",
     color9 = 'tomato',
 
-    lua_load = '/path/to/conky_draw.lua',
+    lua_load = '~/.conky/conkyscraps/conky_draw.lua',
     lua_draw_hook_pre = 'main',
 
-    template1 = '/path/to/conkyscraps/weather/',
-    template2 = '/path/to/conkyscraps/wikipedia/',
+    template1 = '~/.conky/conkyscraps/weather/',
+    template2 = '~/.conky/conkyscraps/wikipedia/',
     template3 = '/en/us/washington-dc/20006/weather-forecast/327659',
     template4 = 'C',  -- Changing this will require a change in the grades in weather_conky_draw.lua
     template5 = '50'
@@ -84,7 +84,7 @@ ${texeci 90 python3 ${template1}conditions_parse.py ${template1} ${template3} ${
 ${font Exo 2:size=10.5}
 ${goto 107}${color3}${execi 90 sed -n '37p' ${template1}conditions}
 ${goto 107}${color3}${execi 90 sed -n '38p' ${template1}conditions}
-${voffset 15}${goto 5}${font conkyweather:size=70}${color3}${execi 90 sed -n '1p' ${template1}conditions}${font}
+${voffset 15}${goto 5}${font conkyweather:size=70}${color2}${execi 90 sed -n '1p' ${template1}conditions}${font}
 \
 \
 ## TEMPERATURE COLORS ############
@@ -124,7 +124,7 @@ ${voffset -44}${goto 107}${color3}${font Exo 2:size=13}${execpi 90 sed -n '19p' 
 \
 ${voffset 2}${font Exo 2:size=9}\
 ${goto 107}${color3}Cloud Cover: ${color2}\
-${alignr 22}${execpi 90 sed -n '10p' ${template1}conditions}\
+${alignr 19}${execpi 90 sed -n '10p' ${template1}conditions}\
 ${goto 220}${color3}Moonrise: ${color2}\
 ${alignr}${execpi 90 sed -n '16p' ${template1}conditions}
 \
@@ -262,7 +262,7 @@ ${voffset 4}${font Orbitron:size=12}${color4}Date${offset 4}${color8}${voffset -
 \
 ## The calendar
 ${voffset 10}${font Inconsolata:size=11}${color3}\
-${execpi 60 cal -h | sed -e '1d' -e s/^/"\$\{goto 40\}"/ -e 's/\<'`date +%-d`'\>/${color9}&${color3}/'}
+${execpi 60 ncal -bh | sed -e '1d' -e s/^/"\$\{goto 40\}"/ -e 's/\<'`date +%-d`'\>/${color9}&${color3}/'}
 \
 ## The day, date, month, and year box
 ${voffset -115}${font CutOutsFor3DFX:size=80}${color8}${alignc -53.5}2${font}
