@@ -40,8 +40,8 @@ WGET_HEADERS = {'user-agent': 'wget/1.18'}
 
 # Dictionary for matching the Accuweather image label with the
 # Conkyweather font letters
-image_conkyweather = {'1': 'a', '2': 'b', '3': 'b', '4': 'c', '5': 'c',
-                      '6': 'd', '7': 'e', '8': 'f', '11': '0', '12': 'h',
+image_conkyweather = {'01': 'a', '02': 'b', '03': 'b', '04': 'c', '05': 'c',
+                      '06': 'd', '07': 'e', '08': 'f', '11': '0', '12': 'h',
                       '13': 'g', '14': 'g', '15': 'm', '16': 'k', '17': 'k',
                       '18': 'i', '19': 'q', '20': 'o', '21': 'o', '23': 'o',
                       '22': 'r', '24': 'E', '31': 'E', '25': 'v', '26': 'x',
