@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
-import argparse
+"""Scrape and parse Accuweather and Moongiant websites"""
+
 import json
 import os
 import requests
 import sys
+import argparse as ap
 from bs4 import BeautifulSoup
 from collections import OrderedDict
 from datetime import datetime
 
 # Parse output path argument for script
-scriptinfo = 'Scrape and parse Accuweather and Moongiant websites'
-parser = argparse.ArgumentParser(description=scriptinfo)
+parser = ap.ArgumentParser(prog=__file__,
+                           description=__doc__,
+                           formatter_class=(ap.RawDescriptionHelpFormatter))
 out_help = 'Directory where output from script will be saved'
 parser.add_argument('outputpath', help=out_help)
 loc_default = 'en/us/washington-dc/20006/weather-forecast/327659'
@@ -24,6 +27,10 @@ scale_help = 'Desired temperature scale; either \'C\' or \'F\''
 parser.add_argument('scale', nargs='?', type=str, const='C',
                     default='C', help=scale_help)
 args = parser.parse_args()
+
+localaddress = args.loc
+out_scale = args.scale
+outputpath = args.outputpath
 
 BASEADDRESS = 'http://www.accuweather.com/'
 MOON_ADDRESS = 'http://www.moongiant.com/phase/today'
@@ -463,7 +470,7 @@ if __name__ == "__main__":
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # Change directory
-    os.chdir(args.outputpath)
+    os.chdir(outputpath)
 
     # Write output
     text = open("conditions", "w")
@@ -476,7 +483,7 @@ if __name__ == "__main__":
     text.write("%s, %s\n" % (city, region))
     text.write("%s\n" % country)
     text.write("%s\n" % now)
-    text.write("%s\n" % args.scale)
+    text.write("%s\n" % out_scale)
     text.close()
     text = open("forecast", "w")
     for x in range(0, 5):
