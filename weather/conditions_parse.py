@@ -10,6 +10,8 @@ import argparse as ap
 from bs4 import BeautifulSoup
 from collections import OrderedDict
 from datetime import datetime
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 # Parse output path argument for script
 parser = ap.ArgumentParser(prog=__file__,
@@ -299,37 +301,31 @@ def strain_forecast(soup):
     return forecast
 
 
-    # Check that we have interent connection (using EAFP principle)
-    # Admittedly, this isn't as clean as I would like.
-    try:
-        HEADERS = REQUEST_HEADERS
-        requests.get(BASEADDRESS, headers=REQUEST_HEADERS, timeout=3.05)
-    except Exception as e:
-        HEADERS = WGET_HEADERS
-        pass
-    try:
-        requests.get(BASEADDRESS, headers=WGET_HEADERS, timeout=3.05)
-    except Exception as e:
-        sys.exit()
-
 def main():
+    # Set up Selenium options to enable headless access
+    options = Options()
+    options.headless = True
+    driver = webdriver.Firefox(options=options,
+                               executable_path='/usr/local/bin/geckodriver')
 
     # Get identifier from address
     loc_id = address.split('/')[-1]
     # Parse the Accuweather websites: Most data is collected from this page
     curr_address = (address.split('weather-forecast')[0]
                     + 'current-weather/' + loc_id)
-    curr_cond = BeautifulSoup(requests.get(curr_address,
-                                           headers=HEADERS).text, 'lxml')
+    driver.get(curr_address)
+    curr_cond = BeautifulSoup(driver.page_source, 'lxml')
     # Precipitation data is collected from this page
     daily_address = (address.split('weather-forecast')[0]
                      + 'daily-weather-forecast/' + loc_id)
-    daily_cond = BeautifulSoup(requests.get(daily_address,
-                                            headers=HEADERS).text, 'lxml')
+    driver.get(daily_address)
+    daily_cond = BeautifulSoup(driver.page_source,
+                               'lxml')("div", "column detail")[0]
     # Extended forecasts are collected from this page
     final_address = daily_address + '?day=6'
-    final_cond = BeautifulSoup(requests.get(final_address,
-                                            headers=HEADERS).text, 'lxml')
+    driver.get(final_address)
+    final_cond = BeautifulSoup(driver.page_source, 'lxml')
+    driver.quit()
 
     # Strain 'curr_cond' soup
     forecast = curr_cond.find(id="detail-now").find_all("div")
