@@ -299,7 +299,6 @@ def strain_forecast(soup):
     return forecast
 
 
-if __name__ == "__main__":
     # Check that we have interent connection (using EAFP principle)
     # Admittedly, this isn't as clean as I would like.
     try:
@@ -313,6 +312,7 @@ if __name__ == "__main__":
     except Exception as e:
         sys.exit()
 
+def main():
 
     # Get identifier from address
     loc_id = address.split('/')[-1]
@@ -493,3 +493,8 @@ if __name__ == "__main__":
         for key in extended_forecasts[x].keys():
             text.write("%s\n" % extended_forecasts[x][key])
     text.close()
+    return None
+
+
+if __name__ == "__main__":
+    main()
