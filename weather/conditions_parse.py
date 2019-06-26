@@ -347,6 +347,19 @@ def main():
     extended_list = final_cond("div", "five-day")[0]
 
     # Get moon phase info
+    # Check that we have interent connection (using EAFP principle)
+    # Admittedly, this isn't as clean as I would like.
+    try:
+        HEADERS = REQUEST_HEADERS
+        requests.get(MOON_ADDRESS, headers=REQUEST_HEADERS, timeout=3.05)
+    except Exception as e:
+        HEADERS = WGET_HEADERS
+        pass
+    try:
+        requests.get(MOON_ADDRESS, headers=WGET_HEADERS, timeout=3.05)
+    except Exception as e:
+        sys.exit()
+
     moon_info = BeautifulSoup(requests.get(MOON_ADDRESS,
                                            headers=HEADERS).text, 'lxml')
 
