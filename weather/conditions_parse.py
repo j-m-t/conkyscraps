@@ -194,7 +194,7 @@ def skytime(skyobject, skyrise, skyset):
         (str) Duration that celestial object is in sky, in hours and minutes.
 
     """
-    duration = skyobject("span")[2].text.split(' ')[0]
+    duration = skyobject("time", "elapsed")[0].text.split()[0]
     if duration == 'N/A':
         if int(skyset[:2]) > int(skyrise[:2]):
             durhour = int(skyset[:2])-int(skyrise[:2])
@@ -274,33 +274,32 @@ def strain_forecast(soup, in_scale='C', out_scale='C'):
             low: Low temperature of the day
 
     """
-    forecast = {}
+    daily_forecast = {}
+    day = soup("h3")
+    icon = soup("div", "icon")
+    daily_highs = soup("span", "hi")
+    daily_lows = soup("span", "lo")
+    details = soup("div", "details")
     for x in range(0, 5):
-        dailysoup = soup[x].find_all("div")[0]
         dailyinfo = OrderedDict()
-        dailyinfo['day'] = dailysoup('a')[0].text
-        dailyinfo['icon'] = image_conkyweather[dailysoup('div')[0]['class'][1]
-                                               .split('-')[1]]
+        dailyinfo['day'] = day[x].text
+        dailyinfo['icon'] = image_conkyweather[icon[x].contents[1]['src']
+                                               .split('/')[-1].split('.')[0]]
         # NOTE: We use 'split' because sometimes we have Fahrenheit unit ('F')
         #       after the degree symbol (°), which causes 'strip' to fail.
-        if 'Lo' in dailysoup('span')[1].text:
-            dailyinfo['high'] = dailysoup('span')[1].text
-            dailyinfo['low'] = '/' + convert_item((dailysoup('span')[0].text
-                                                   .split('°')[0]),
-                                                  'temp', scale, args.scale)
+        dailyinfo['high'] = convert_item(daily_highs[x].text.split('°')[0],
+                                         'temp', in_scale, out_scale)
+        if 'Lo' in daily_lows[x].text:
+            dailyinfo['low'] = daily_lows[x].text
         else:
-            dailyinfo['high'] = convert_item((dailysoup('span')[0]
-                                              .text.split('°')[0]),
-                                             'temp', scale, args.scale)
-            dailyinfo['low'] = '/' + convert_item((dailysoup('span')[1].text
-                                                   .split('°')[0]
-                                                   .split('/')[1]),
-                                                  'temp', scale, args.scale)
-        description = wordwrap(dailysoup('span')[-1].text)
+            dailyinfo['low'] = '/' + convert_item(daily_lows[x].text
+                                                  .split('°')[0].split('/')[1],
+                                                  'temp', in_scale, out_scale)
+        description = wordwrap(details[x].text)
         dailyinfo['line1'] = description[0]
         dailyinfo['line2'] = description[1]
-        forecast[x] = dailyinfo
-    return forecast
+        daily_forecast[x] = dailyinfo
+    return daily_forecast
 
 
 def main():
@@ -330,16 +329,22 @@ def main():
     driver.quit()
 
     # Strain 'curr_cond' soup
-    forecast = curr_cond.find(id="detail-now").find_all("div")
-    sun = curr_cond.find_all(class_='time-period')[0]
-    moon = curr_cond.find_all(class_='time-period')[1]
-    records = curr_cond.find(id='feature-history').find_all('td')
+    # NOTE: Accuweather redesigned their website sometime late 2018, so the
+    #       code will need to be strained differently:
+    try:
+        forecast = curr_cond("div", "conditions-wrapper day")[0]
+    except IndexError:
+        forecast = curr_cond("div", "conditions-wrapper night")[0]
+    sun = curr_cond("div", "block rise-set sun")[0]
+    moon = curr_cond("div", "block rise-set moon")[0]
+    highs = (curr_cond("table", "temp-history text--size14")[0]
+             .contents[3].contents[0].text.split('\n'))
+    lows = (curr_cond("table", "temp-history text--size14")[0]
+            .contents[3].contents[2].text.split('\n'))
 
     # Strain soup for daily forecasts
-    panel_list = curr_cond.find_all("div",
-                                    class_="panel-list")[1].find_all("li")
-    extended_list = final_cond.find_all("div",
-                                        class_="panel-list")[1].find_all("li")
+    panel_list = curr_cond("div", "five-day")[0]
+    extended_list = final_cond("div", "five-day")[0]
 
     # Get moon phase info
     moon_info = BeautifulSoup(requests.get(MOON_ADDRESS,
@@ -349,11 +354,6 @@ def main():
     city = curr_cond.find(class_="locality").find().get("title")
     region = curr_cond.find("abbr").get("title")
     country = curr_cond.find(class_="country-name").get("title")
-
-    # Transformations for the forecast data
-    wind_icon = forecast[5].find(class_='wind-point').get("class")[1]
-    temp = forecast[4]('span')
-    misc = forecast[5]('li')
 
     # Parse JSON data in moon_info
     moon_dict = json.loads(moon_info("script")[3].string.split("jArray")[1]
@@ -379,38 +379,48 @@ def main():
     #       the Lua script.
     # NOTE: '\xc2' is part of the UTF8 representation of the degree symbol
     weather = OrderedDict()
-    weather['current_icon'] = image_conkyweather[forecast[2]['class'][1]
-                                                 .split('-')[1]]
-    weather['current_cond'] = forecast[3]("span")[-1].text
-    weather['current_temp'] = convert_item(temp[0].text.strip('°'),
-                                           'temp', scale, args.scale)
-    weather['current_feel'] = convert_item(temp[1].text.split(' ')[1]
+    weather['current_icon'] = image_conkyweather[forecast("div", "icon")[0]
+                                                 .contents[1]['src']
+                                                 .split('/')[-1]
+                                                 .split('.')[0]]
+    weather['current_cond'] = forecast("div", "phrase")[0].text
+    weather['current_temp'] = convert_item(forecast("div", "hi")[0]
+                                           .text.strip('°'),
+                                           'temp', scale, out_scale)
+    weather['current_feel'] = convert_item(forecast("div", "realfeel")[0]
+                                           .text.split()[1]
                                            .strip('°'),
-                                           'temp', scale, args.scale)
-    weather['windicon'] = image_conkywindnesw[wind_icon]
-    weather['wind_spd'] = (convert_item(misc[1].text.split()[0], 'dist',
-                                        scale, args.scale)
-                           + units_conversion[args.scale + 'speed'])
-    weather['humidity'] = misc[-7].text.split(': ')[1]
-    weather['pressure'] = (convert_item(misc[-6].text
-                                        .split(': ')[1].split()[0],
-                                        'pressure', scale, args.scale)
-                           + units_conversion[args.scale + 'pressure'])
-    weather['uv_index'] = misc[-5].text.split(': ')[1]
-    weather['cloudcov'] = misc[-4].text.split(': ')[1]
-    weather['dewpoint'] = convert_item((misc[-2].text.split(': ')[1]
-                                        .split('°')[0]),
-                                       'temp', scale, args.scale)
-    weather['visiblty'] = (convert_item(misc[-1].text
-                                        .split(': ')[1].split()[0],
-                                        'dist', scale, args.scale)
-                           + units_conversion[args.scale + 'dist'])
-    weather['sunrise'] = convert_time(sun("span")[0].text)
-    weather['sunset'] = convert_time(sun("span")[1].text)
+                                           'temp', scale, out_scale)
+    weather['windicon'] = image_conkywindnesw[forecast("div", "wind-point")
+                                              [0]['class'][1]]
+    weather['wind_spd'] = (convert_item(forecast("div", "speed")[0]
+                                        .text.split()[0],
+                                        'dist', scale, out_scale)
+                           + units_conversion[out_scale + 'speed'])
+    weather['humidity'] = (forecast("div", "details")[0]
+                           .contents[1].text.split()[1])
+    weather['pressure'] = (convert_item(forecast("div", "details")[0]
+                                        .contents[3].text.split()[1],
+                                        'pressure', scale, out_scale)
+                           + units_conversion[out_scale + 'pressure'])
+    weather['uv_index'] = (forecast("div", "details")[0]
+                           .contents[5].text.split()[-1])
+    weather['cloudcov'] = (forecast("div", "details")[0]
+                           .contents[7].text.split()[-1])
+    weather['dewpoint'] = convert_item(forecast("div", "details")[0]
+                                       .contents[11].text
+                                       .split()[2].strip('°'),
+                                       'temp', scale, out_scale)
+    weather['visiblty'] = (convert_item(forecast("div", "details")[0]
+                                        .contents[13].text.split()[1],
+                                        'dist', scale, out_scale)
+                           + units_conversion[out_scale + 'dist'])
+    weather['sunrise'] = convert_time(sun("time", "rise")[0].text)
+    weather['sunset'] = convert_time(sun("time", "set")[0].text)
     weather['suntime'] = skytime(sun, weather['sunrise'],
                                  weather['sunset'])
-    weather['moonrise'] = convert_time(moon("span")[0].text)
-    weather['moonset'] = convert_time(moon("span")[1].text)
+    weather['moonrise'] = convert_time(moon("time", "rise")[0].text)
+    weather['moonset'] = convert_time(moon("time", "set")[0].text)
     weather['moontime'] = skytime(moon, weather['moonrise'],
                                   weather['moonset'])
     weather['moon_phase'] = moon_dict[7]
@@ -421,43 +431,42 @@ def main():
 
     # Make separate dictionary for temperature history
     history = OrderedDict()
-    history['high_today'] = convert_item(records[0].text.strip('°'),
-                                         'temp', scale, args.scale)
-    history['high_mean'] = convert_item(records[1].text.strip('°'),
-                                        'temp', scale, args.scale)
-    if records[2].text == 'N/A':
+    history['high_today'] = convert_item(highs[2].strip('°'),
+                                         'temp', scale, out_scale)
+    history['high_mean'] = convert_item(highs[3].strip('°'),
+                                        'temp', scale, out_scale)
+    if highs[5] == 'N/A':
         history['high_record'] = 'No record'
         history['high_record_year'] = ''
     else:
-        history['high_record'] = convert_item(records[2].text.split('°')[0],
-                                              'temp', scale, args.scale)
-        history['high_record_year'] = records[2].text.split(' ')[1]
-    history['high_last_year'] = convert_item(records[3].text.strip('°'),
-                                             'temp', scale, args.scale)
-    history['low_today'] = convert_item(records[4].text.strip('°'),
-                                        'temp', scale, args.scale)
-    history['low_mean'] = convert_item(records[5].text.strip('°'),
-                                       'temp', scale, args.scale)
-    if records[6].text == 'N/A':
+        history['high_record'] = convert_item(highs[5].split('°')[0],
+                                              'temp', scale, out_scale)
+        history['high_record_year'] = highs[5].split()[1]
+    history['high_last_year'] = convert_item(highs[7].strip('°'),
+                                             'temp', scale, out_scale)
+
+    history['low_today'] = convert_item(lows[2].strip('°'),
+                                        'temp', scale, out_scale)
+    history['low_mean'] = convert_item(lows[3].strip('°'),
+                                       'temp', scale, out_scale)
+    if lows[5] == 'N/A':
         history['low_record'] = 'No record'
         history['low_record_year'] = ''
     else:
-        history['low_record'] = convert_item(records[6].text.split('°')[0],
-                                             'temp', scale, args.scale)
-        history['low_record_year'] = records[6].text.split(' ')[1]
-    history['low_last_year'] = convert_item(records[7].text.strip('°'),
-                                            'temp', scale, args.scale)
+        history['low_record'] = convert_item(lows[5].split('°')[0],
+                                             'temp', scale, out_scale)
+        history['low_record_year'] = lows[5].split()[1]
+    history['low_last_year'] = convert_item(lows[7].strip('°'),
+                                            'temp', scale, out_scale)
 
     # Make a dictionary for the precipitation info
     precipitation = OrderedDict()
-    precipitation['percent'] = daily_cond.find("span", class_="precip").text
-    precipitation['inches'] = (convert_item(daily_cond
-                                            .find(class_="stats")('li')[2]
-                                            .text.split(': ')[1].split()[0],
-                                            'measure', scale, args.scale)
-                               + units_conversion[args.scale + 'measure'])
-    precipitation['hours'] = (daily_cond.find(class_="stats")('li')[-2]
-                              .text.split(': ')[1])
+    precipitation['percent'] = daily_cond.text.split('\n')[2].split()[1]
+    precipitation['amount'] = (convert_item(daily_cond.text
+                                            .split('\n')[3].split()[1],
+                                            'measure', scale, out_scale)
+                               + units_conversion[out_scale + 'measure'])
+    precipitation['hours'] = daily_cond.text.split('\n')[7].split()[3] + " hrs"
 
     # Collect forecast information and store in nested dictionaries)
     daily_forecasts = strain_forecast(panel_list, scale, out_scale)
