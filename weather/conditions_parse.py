@@ -254,13 +254,15 @@ def wordwrap(text):
     return output
 
 
-def strain_forecast(soup):
+def strain_forecast(soup, in_scale='C', out_scale='C'):
     """
     'Strains' the daily forecasts from the data in Accuweather websites.
 
     Args:
         soup (bs4.element.ResultSet): BeautifulSoup object created with
             '.find_all' command.
+        in_scale (str): Temperature scale found on website.
+        out_scale (str): Temperature scale desired in output.
 
     Returns:
         dict: Dictionary of daily weather forecast with the following keys:
@@ -364,13 +366,12 @@ def main():
                  .split('moon_day_')[-1].split('.')[0])
 
     # Determine temperature scale used in HTML
-    scale = curr_cond.find(checked="checked").get("value")
-    if scale == 'celsius':
-        scale = 'C'
-    else:
-        # I think Accuweather misspells Fahrenheit (as 'farenheit).
-        # I don't see Accuweather using Kelvin or other scales anytime soon.
-        scale = 'F'
+    scale = (curr_cond("div", "subnav-dropdown-container location-crumbs")[0]
+             .contents[5].contents[3].text[-1])
+    # [2018-11-15 Thu] Accuweather changed their setup, and now there is no
+    # explicit declaration of the scale used on the page, so I scrape it from
+    # its appearance on the top of the page.
+    # I don't see Accuweather using Kelvin or other scales anytime soon.
 
     # Collect the weather information
     # NOTE: I strip the degree symbol to be able to do conditional comparisons
@@ -459,8 +460,8 @@ def main():
                               .text.split(': ')[1])
 
     # Collect forecast information and store in nested dictionaries)
-    daily_forecasts = strain_forecast(panel_list)
-    extended_forecasts = strain_forecast(extended_list)
+    daily_forecasts = strain_forecast(panel_list, scale, out_scale)
+    extended_forecasts = strain_forecast(extended_list, scale, out_scale)
 
     # Create a timestamp
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
