@@ -5,7 +5,10 @@ A collection of Python scripts for Conky configurations
 [![screenshot](https://github.com/j-m-t/conkyscraps/blob/master/img/conky_weather.png)](https://github.com/j-m-t/conkyscraps/blob/master/img/conky_weather.png)
 
 ### Requirements
-These scripts are set up to run with Python 3. The only extra packment requirement is ```BeautifulSoup```.  You also need ```Conky```, of course.
+These scripts are set up to run with Python 3. ```Selenium``` is used to access Accuweather, ```requests``` is used to access other sites, and ```BeautifulSoup``` is used to scrape them all.  You also need ```Conky```, of course.
+
+* `Selenium` requires a webdriver - I use [Gecko](https://github.com/mozilla/geckodriver/releases) from Mozilla. After the webdriver is installed, `Selenium` can be installed via `pip` or `conda`.
+* `requests` and `BeautifulSoup` can also be installed via `pip` or `conda`.
 
 ### How to use
 The easiest way to use this is to clone the repository in `~/.conky`:
