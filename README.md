@@ -36,10 +36,10 @@ Finally, `CutOutsFor3DFX` is also used.
 
 ## Python script details
 
-The arguments needed for the Python scripts are passed from the `conky_weather.lua` Conky configuration, but these Python sscripts can be used on their own.
+The arguments needed for the Python scripts are passed from the `conky_weather.lua` Conky configuration, but these Python scripts can be used on their own.
 
 ### weather
-The `weather` directory contains the Python script `conditions_parse.py`, which scrapes Accuweather for current conditions are seven-day forecasts.  The script also scrapes Moongiant for lunar data.  Many thanks to TeoBigusGeekus for inspiration.  The basic usage of the scripts follows:
+The `weather` directory contains the Python script `conditions_parse.py`, which scrapes Accuweather for current conditions and seven-day forecasts.  The script also scrapes Moongiant for lunar data.  Many thanks to TeoBigusGeekus for inspiration.  The basic usage of the scripts follows:
 ```bash
 python3 conditions_parse.py -h
 usage: conditions_parse.py [-h] outputpath [loc] [scale]
