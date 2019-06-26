@@ -32,8 +32,11 @@ localaddress = args.loc
 out_scale = args.scale
 outputpath = args.outputpath
 
+# The address for the local weather
 BASEADDRESS = 'http://www.accuweather.com/'
 MOON_ADDRESS = 'http://www.moongiant.com/phase/today'
+address = BASEADDRESS + localaddress
+
 # A list of different user-agent headers, for redundancy
 REQUEST_HEADERS = {'user-agent': 'my-app/0.0.1'}
 WGET_HEADERS = {'user-agent': 'wget/1.18'}
@@ -310,9 +313,6 @@ if __name__ == "__main__":
     except Exception as e:
         sys.exit()
 
-    # The address for the local weather
-    localaddress = args.loc
-    address = BASEADDRESS + localaddress
 
     # Get identifier from address
     loc_id = address.split('/')[-1]
